@@ -14,6 +14,8 @@
 
 - [워치 0.5.32 차량 창 자동 원인 기록](VEHICLE_EVIDENCE_0.5.32_KO.md) · [Automatic vehicle-panel evidence](VEHICLE_EVIDENCE_0.5.32_EN.md)
 
+- [11월 23일 Mac 개발 연결 실패 범위](DEVELOPER_CONNECTION_2026-11-23_KO.md) · [Developer connection failure scope](DEVELOPER_CONNECTION_2026-11-23_EN.md)
+
 ## 현재 사용 안내 / Current guides
 
 | 내용 / Topic | 한국어 | English |
