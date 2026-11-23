@@ -13,7 +13,7 @@ struct VehicleQuickView: View {
                     .font(.caption2).foregroundStyle(.secondary)
                 LazyVGrid(columns:columns,spacing:8) {
                     ForEach(VehicleQuickControl.allCases) { control in
-                        Button { router.run(control) } label: {
+                        Button { router.run(control,source:"VehicleQuickView.button") } label: {
                             VStack(spacing:7) {
                                 Image(systemName:control.symbol).font(.system(size:23,weight:.medium))
                                 Text(language.text(control.title)).font(.caption.weight(.semibold))
@@ -42,11 +42,11 @@ struct VehicleQuickView: View {
             }
         }.navigationTitle(language.text("차량 제어"))
             .toolbar { ToolbarItem(placement:.cancellationAction) { Button { router.dismiss() } label: { Image(systemName:"xmark") } } }
-            .onAppear { link.requestVehicleControls() }
+            .onAppear { link.noteVehiclePanelView(true);link.requestVehicleControls() }
             .onChange(of:link.connected) { value in
                 if value && !router.waiting { link.requestVehicleControls() }
             }
-            .onDisappear { router.viewDidDisappear() }
+            .onDisappear { link.noteVehiclePanelView(false);router.viewDidDisappear() }
     }
 }
 struct VehicleQuickSettingsView: View {
@@ -79,6 +79,7 @@ struct VehicleQuickSettingsView: View {
             }
             Button(language.text("제어 목록 새로고침")) { link.requestVehicleControls() }
         }.navigationTitle(language.text("빠른 제어 설정"))
-            .onAppear { link.requestVehicleControls() }
+            .onAppear { link.noteDisplayEvent("vehicle.panel.settings.appear");link.requestVehicleControls() }
+            .onDisappear { link.noteDisplayEvent("vehicle.panel.settings.disappear") }
     }
 }

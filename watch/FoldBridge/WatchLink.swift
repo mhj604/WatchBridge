@@ -71,6 +71,12 @@ final class WatchLink: NSObject, ObservableObject, CBCentralManagerDelegate, CBP
     private var displayActivationUptime: TimeInterval?
     private var displayRenderedSurface = "main"
     private var vehiclePanelPresented = false
+    private var vehiclePanelViewVisible = false
+    private var vehiclePanelRequestID = "none"
+    private var vehiclePanelRequestSource = "none"
+    private var vehiclePanelRequestAt = ""
+    private var vehiclePanelRequestUptime: TimeInterval?
+    private var vehiclePanelRequestedControl = "none"
     private var displayEventSequence = 0
     private var lastWriteAt = Date.distantPast
     private var lastFailure = ""
@@ -1455,6 +1461,19 @@ final class WatchLink: NSObject, ObservableObject, CBCentralManagerDelegate, CBP
         displayRenderedSurface = value ? "vehicle-panel":"main"
         noteDisplayEvent(value ? "vehicle.panel.presented":"vehicle.panel.hidden")
     }
+    func noteVehiclePanelRequest(source: String, control: String = "none") {
+        vehiclePanelRequestID = UUID().uuidString
+        vehiclePanelRequestSource = source
+        vehiclePanelRequestAt = ISO8601DateFormatter().string(from:Date())
+        vehiclePanelRequestUptime = ProcessInfo.processInfo.systemUptime
+        vehiclePanelRequestedControl = control
+        // Log before changing presentation, including requests for an already open sheet.
+        noteDisplayEvent("vehicle.panel.open-request")
+    }
+    func noteVehiclePanelView(_ visible: Bool) {
+        vehiclePanelViewVisible = visible
+        noteDisplayEvent(visible ? "vehicle.panel.view.appear":"vehicle.panel.view.disappear")
+    }
     // App-owned observations, not a claim to know private watchOS activation reasons.
     // Keep activation summaries apart from the noisier lifecycle journal.
     func noteDisplayEvent(_ event: String) {
@@ -1472,7 +1491,7 @@ final class WatchLink: NSObject, ObservableObject, CBCentralManagerDelegate, CBP
         let source = ProcessInfo.processInfo.environment["WATCHBRIDGE_LAUNCH_SOURCE"]
         let launchSource = ["weekly-renewal","maintenance-background"].contains(source ?? "") ? source!:"unspecified"
         displayEventSequence += 1
-        var record: [String:Any] = ["schema":2,"at":formatter.string(from:Date()),"process":processID,
+        var record: [String:Any] = ["schema":3,"at":formatter.string(from:Date()),"process":processID,
             "build":Bundle.main.object(forInfoDictionaryKey:"CFBundleVersion") as? String ?? "",
             "sequence":displayEventSequence,"event":event,"scenePhase":displayScenePhase,
             "applicationStateName":native,"previousObservedNativeState":displayPreviousNativeState,
@@ -1483,6 +1502,12 @@ final class WatchLink: NSObject, ObservableObject, CBCentralManagerDelegate, CBP
             "launchSource":launchSource,"runningInDock":WKApplication.shared().isApplicationRunningInDock,
             "renderedSurface":displayRenderedSurface,"vehiclePanelPresented":vehiclePanelPresented,"connected":connected,"authenticated":authenticated,"stage":stage,
             "continuousRequested":continuousRuntime,"locationActivityState":locationActivityState]
+        record["vehiclePanelViewVisible"] = vehiclePanelViewVisible
+        record["vehiclePanelRequestID"] = vehiclePanelRequestID
+        record["vehiclePanelRequestSource"] = vehiclePanelRequestSource
+        record["vehiclePanelRequestAt"] = vehiclePanelRequestAt
+        record["vehiclePanelRequestAgeSeconds"] = vehiclePanelRequestUptime.map { max(0,uptime - $0) } ?? -1
+        record["vehiclePanelRequestedControl"] = vehiclePanelRequestedControl
         if activated {
             record["observation"] = displayPreviousNativeState == "inactive" ? "inactive-to-active":
                 displayPreviousNativeState == "background" ? "background-to-active":"first-observed-active"
@@ -1490,11 +1515,33 @@ final class WatchLink: NSObject, ObservableObject, CBCentralManagerDelegate, CBP
             record["activationCause"] = "not-provided-by-os"
         }
         appendDisplayRecord(record,file:"watchbridge-display-events.json",limit:1024)
+        if event.hasPrefix("vehicle.panel.") || event == "vehicle.quick.intent" {
+            appendDisplayRecord(record,file:"watchbridge-vehicle-panels.json",limit:256)
+        }
+        if (event.hasPrefix("vehicle.panel.") && event.hasSuffix(".appear")) ||
+            ((event == "scene.active" || activated) && (vehiclePanelPresented || vehiclePanelViewVisible)) {
+            // Freeze context automatically; a later user report is not required.
+            // View appearance is a SwiftUI callback, not proof of a physical tap.
+            freezeVehiclePanelContext(trigger:record)
+        }
         if activated || (entrySignal && activationAge >= 0 && activationAge <= 10) {
             record["summaryKind"] = activated ? "activation":"nearby-entry-signal"
             appendDisplayRecord(record,file:"watchbridge-display-activations.json",limit:256)
         }
         displayPreviousNativeState = native; displayPreviousEventUptime = uptime
+    }
+    private func freezeVehiclePanelContext(trigger: [String:Any]) {
+        guard let folder = FileManager.default.urls(for:.documentDirectory,in:.userDomainMask).first else { return }
+        func recent(_ file: String, _ count: Int) -> [[String:Any]] {
+            guard let data = try? Data(contentsOf:folder.appendingPathComponent(file)),
+                  let records = try? JSONSerialization.jsonObject(with:data) as? [[String:Any]] else { return [] }
+            return Array(records.suffix(count))
+        }
+        let snapshot: [String:Any] = ["schema":1,"trigger":trigger,
+            "cause":"not-determined","physicalTouch":"not-observable",
+            "events":recent("watchbridge-display-events.json",48),
+            "panelEvents":recent("watchbridge-vehicle-panels.json",16)]
+        appendDisplayRecord(snapshot,file:"watchbridge-vehicle-panel-snapshots.json",limit:16)
     }
     func recordDisplayIncident() {
         noteDisplayEvent("incident.user-reported")
@@ -1507,7 +1554,8 @@ final class WatchLink: NSObject, ObservableObject, CBCentralManagerDelegate, CBP
         let report: [String:Any] = ["schema":1,"at":ISO8601DateFormatter().string(from:Date()),
             "process":processID,"build":Bundle.main.object(forInfoDictionaryKey:"CFBundleVersion") as? String ?? "",
             "activationID":displayActivationID,"events":recent("watchbridge-display-events.json",80),
-            "activations":recent("watchbridge-display-activations.json",16)]
+            "activations":recent("watchbridge-display-activations.json",16),
+            "panelEvents":recent("watchbridge-vehicle-panels.json",16)]
         // Freeze the user's incident context even if later wrist raises fill the live journal.
         appendDisplayRecord(report,file:"watchbridge-display-reports.json",limit:8)
     }
@@ -1558,6 +1606,8 @@ final class WatchLink: NSObject, ObservableObject, CBCentralManagerDelegate, CBP
             "livenessSupported":peerSupportsLiveness,"awaitingPong":pendingPing != nil,
             "pongCount":pongCount,"remoteRefreshCount":remoteRefreshCount,
             "displayActivationID":displayActivationID,"displayLastEntrySignal":displayEntrySignal,"displayRenderedSurface":displayRenderedSurface,"vehiclePanelPresented":vehiclePanelPresented,
+            "vehiclePanelViewVisible":vehiclePanelViewVisible,"vehiclePanelRequestID":vehiclePanelRequestID,
+            "vehiclePanelRequestSource":vehiclePanelRequestSource,"vehiclePanelRequestAt":vehiclePanelRequestAt,
             "renewalWatchNotified":UserDefaults.standard.string(forKey:"renewalWatchNotified") ?? "",
             "renewalPhoneAcknowledged":UserDefaults.standard.string(forKey:"renewalPhoneAcknowledged") ?? "",
             "continuousRequested":continuousRuntime,"notificationAllowed":notificationAllowed,

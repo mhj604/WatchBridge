@@ -67,6 +67,7 @@ final class VehicleQuickRouter: ObservableObject {
         }.store(in:&observations)
     }
     func openControls(source: String = "in-app") {
+        WatchLink.shared.noteVehiclePanelRequest(source:source == "widget" ? "OpenVehicleControls.perform":"ContentView.vehicleQuickMenu")
         backgroundDismissal = false
         WatchLink.shared.noteDisplayEvent(source == "widget" ? "vehicle.panel.widget":"vehicle.panel.in-app")
         cancelPending();awaitingDispatch = false;requested = nil
@@ -96,7 +97,8 @@ final class VehicleQuickRouter: ObservableObject {
         WatchLink.shared.noteVehicleQuickEvent("mapping.saved")
         objectWillChange.send()
     }
-    func run(_ control: VehicleQuickControl) {
+    func run(_ control: VehicleQuickControl, source: String) {
+        WatchLink.shared.noteVehiclePanelRequest(source:source,control:control.rawValue)
         backgroundDismissal = false
         presented = true
         guard !waiting, !WatchLink.shared.vehicleBusy else { return }

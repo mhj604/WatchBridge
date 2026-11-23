@@ -27,7 +27,7 @@ struct RunVehicleQuickControl: AppIntent {
     @MainActor func perform() async throws -> some IntentResult {
         #if !WIDGET_EXTENSION
         WatchLink.shared.noteDisplayEvent("vehicle.quick.intent")
-        VehicleQuickRouter.shared.run(control)
+        VehicleQuickRouter.shared.run(control,source:"RunVehicleQuickControl.perform")
         #endif
         return .result()
     }

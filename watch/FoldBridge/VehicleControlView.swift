@@ -51,7 +51,7 @@ struct VehicleControlView: View {
                 Section {
                     if link.vehicleState == "result_pending" {
                         ForEach(VehicleQuickControl.allCases) { control in
-                            Button(language.text(control.title)) { router.run(control) }
+                            Button(language.text(control.title)) { router.run(control,source:"VehicleControlView.button") }
                                 .disabled(link.vehicleBusy || router.waiting)
                         }
                         if !router.message.isEmpty { Text(language.text(router.message)).font(.caption2) }
@@ -73,7 +73,8 @@ struct VehicleControlView: View {
             }
         }
         .navigationTitle(language.text("차량 제어"))
-        .onAppear { link.requestVehicleControls() }
+        .onAppear { link.noteDisplayEvent("vehicle.panel.all-controls.appear");link.requestVehicleControls() }
+        .onDisappear { link.noteDisplayEvent("vehicle.panel.all-controls.disappear") }
         .onChange(of:link.connected) { value in
             if value { link.requestVehicleControls() }
             else { confirming = false; selected = nil }

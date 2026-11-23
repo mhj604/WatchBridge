@@ -15,7 +15,7 @@ Forward Galaxy notifications **directly to Apple Watch over Bluetooth LE**. Noti
 | Connection problems | [Troubleshooting](docs/TROUBLESHOOTING_EN.md) · [Current status and unfinished scope](docs/CURRENT_STATUS_EN.md) |
 
 
-Watch source is **0.5.31 / build 65** with retained vehicle-panel cleanup. The owner still has 0.5.30 / 64 installed while update connectivity is pending. [Change details](docs/VEHICLE_PANEL_0.5.31_EN.md).
+Watch source is **0.5.32 / build 66**, adding retained-panel cleanup and automatic evidence for unexpected vehicle screens. The owner's installed app remains 0.5.30 / 64 while developer connectivity blocks deployment. [Records and limits](docs/VEHICLE_EVIDENCE_0.5.32_EN.md).
 
 The APK belongs to release bundle `android-v0.6.23`. Bundle tags, Android versions and Watch versions are different. Older artifacts remain in [Releases](https://github.com/mhj604/WatchBridge/releases).
 

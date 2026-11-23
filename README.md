@@ -15,7 +15,7 @@
 | 연결 문제 | [문제 해결](docs/TROUBLESHOOTING_KO.md) · [현재 상태와 미완료 범위](docs/CURRENT_STATUS_KO.md) |
 
 
-워치 소스는 **0.5.31 / 빌드 65**로 차량 창 복귀 문제를 수정했습니다. 소유자 기기에는 아직 0.5.30 / 64가 설치돼 있으며 업데이트 연결 준비를 기다립니다. [변경 내용](docs/VEHICLE_PANEL_0.5.31_KO.md).
+워치 소스는 **0.5.32 / 빌드 66**입니다. 차량 창 재표시 경로 정리와, 누르지 않은 창의 재등장 원인을 좁힐 자동 기록을 추가했습니다. 소유자 설치본은 아직 0.5.30 / 64이며 개발 연결 문제로 업데이트가 대기 중입니다. [기록 내용과 한계](docs/VEHICLE_EVIDENCE_0.5.32_KO.md).
 
 APK는 `android-v0.6.23` 배포 묶음에 있습니다. 묶음 태그·Android 버전·워치 버전은 서로 다릅니다. 과거 버전 파일은 [Releases](https://github.com/mhj604/WatchBridge/releases)에 보존합니다.
 

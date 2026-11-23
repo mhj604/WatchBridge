@@ -12,6 +12,8 @@
 
 - [워치 0.5.31 차량 창 백그라운드 정리](VEHICLE_PANEL_0.5.31_KO.md) · [Retained vehicle panel](VEHICLE_PANEL_0.5.31_EN.md)
 
+- [워치 0.5.32 차량 창 자동 원인 기록](VEHICLE_EVIDENCE_0.5.32_KO.md) · [Automatic vehicle-panel evidence](VEHICLE_EVIDENCE_0.5.32_EN.md)
+
 ## 현재 사용 안내 / Current guides
 
 | 내용 / Topic | 한국어 | English |
