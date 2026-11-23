@@ -8,6 +8,8 @@
 
 - [워치 화면 재등장 기록·발생 시각 보관](DISPLAY_EVIDENCE_0.5.30_KO.md) · [Screen reappearance evidence](DISPLAY_EVIDENCE_0.5.30_EN.md)
 
+- [11월 23일 자동 화면 기록 조사](DISPLAY_OBSERVATION_2026-11-23_KO.md) · [November 23 display observation](DISPLAY_OBSERVATION_2026-11-23_EN.md)
+
 ## 현재 사용 안내 / Current guides
 
 | 내용 / Topic | 한국어 | English |
