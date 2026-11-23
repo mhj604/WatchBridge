@@ -238,17 +238,20 @@ final class AppDelegate: NSObject, WKApplicationDelegate, UNUserNotificationCent
     var body: some Scene {
         WindowGroup { ContentView().environmentObject(link).environmentObject(language)
             .environment(\.locale,language.locale)
-            .sheet(isPresented:$vehicleQuick.presented,onDismiss:{link.noteDisplayEvent("vehicle.panel.dismiss");vehicleQuick.cancelPending()}) {
+            .sheet(isPresented:$vehicleQuick.presented,onDismiss:{vehicleQuick.presentationDidDismiss()}) {
                 NavigationStack { VehicleQuickView().environmentObject(link).environmentObject(language) }
                     .environment(\.locale,language.locale)
             }.onAppear {
             link.noteDisplayEvent("view.main.appear")
             recordScenePhase(scenePhase)
             link.setActive(scenePhase == .active)
+            vehicleQuick.setMainSceneActive(scenePhase == .active)
             if scenePhase == .active { LocationKeepAlive.shared.resumeIfRequested() }
         }.onChange(of:scenePhase) { phase in
             recordScenePhase(phase)
             link.setActive(phase == .active)
+            vehicleQuick.setMainSceneActive(phase == .active)
+            if phase == .background { vehicleQuick.dismissForBackground() }
             if phase == .active { LocationKeepAlive.shared.resumeIfRequested() }
         } }
         WKNotificationScene(controller:CompactNotificationController.self,category:RelayCategory.withSourceIcon)

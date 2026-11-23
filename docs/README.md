@@ -10,6 +10,8 @@
 
 - [11월 23일 자동 화면 기록 조사](DISPLAY_OBSERVATION_2026-11-23_KO.md) · [November 23 display observation](DISPLAY_OBSERVATION_2026-11-23_EN.md)
 
+- [워치 0.5.31 차량 창 백그라운드 정리](VEHICLE_PANEL_0.5.31_KO.md) · [Retained vehicle panel](VEHICLE_PANEL_0.5.31_EN.md)
+
 ## 현재 사용 안내 / Current guides
 
 | 내용 / Topic | 한국어 | English |

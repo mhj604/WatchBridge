@@ -70,6 +70,7 @@ final class WatchLink: NSObject, ObservableObject, CBCentralManagerDelegate, CBP
     private var displayActivationID = "none"
     private var displayActivationUptime: TimeInterval?
     private var displayRenderedSurface = "main"
+    private var vehiclePanelPresented = false
     private var displayEventSequence = 0
     private var lastWriteAt = Date.distantPast
     private var lastFailure = ""
@@ -1449,6 +1450,11 @@ final class WatchLink: NSObject, ObservableObject, CBCentralManagerDelegate, CBP
         displayScenePhase = phase
         noteDisplayEvent("scene."+phase)
     }
+    func noteVehiclePanelPresentation(_ value: Bool) {
+        vehiclePanelPresented = value
+        displayRenderedSurface = value ? "vehicle-panel":"main"
+        noteDisplayEvent(value ? "vehicle.panel.presented":"vehicle.panel.hidden")
+    }
     // App-owned observations, not a claim to know private watchOS activation reasons.
     // Keep activation summaries apart from the noisier lifecycle journal.
     func noteDisplayEvent(_ event: String) {
@@ -1457,8 +1463,6 @@ final class WatchLink: NSObject, ObservableObject, CBCentralManagerDelegate, CBP
         let entrySignal = event == "notification.open" || event == "notification.renewal.open"
             || event == "vehicle.panel.widget" || event == "vehicle.quick.intent" || event.hasPrefix("entry.")
         if entrySignal { displayEntrySignal = event; displayEntryUptime = uptime }
-        if event == "vehicle.panel.widget" || event == "vehicle.panel.in-app" { displayRenderedSurface = "vehicle-panel" }
-        if event == "view.main.appear" || event == "vehicle.panel.dismiss" { displayRenderedSurface = "main" }
         let activated = native == "active" && displayPreviousNativeState != "active"
         if activated { displayActivationID = UUID().uuidString; displayActivationUptime = uptime }
         let entryAge = displayEntryUptime.map { max(0,uptime - $0) } ?? -1
@@ -1477,7 +1481,7 @@ final class WatchLink: NSObject, ObservableObject, CBCentralManagerDelegate, CBP
             "lastEntrySignal":displayEntrySignal,"entrySignalAgeSeconds":entryAge,
             "entrySignalNearActivation":entryAge >= 0 && entryAge <= 10 && activationAge >= 0 && activationAge <= 10,
             "launchSource":launchSource,"runningInDock":WKApplication.shared().isApplicationRunningInDock,
-            "renderedSurface":displayRenderedSurface,"connected":connected,"authenticated":authenticated,"stage":stage,
+            "renderedSurface":displayRenderedSurface,"vehiclePanelPresented":vehiclePanelPresented,"connected":connected,"authenticated":authenticated,"stage":stage,
             "continuousRequested":continuousRuntime,"locationActivityState":locationActivityState]
         if activated {
             record["observation"] = displayPreviousNativeState == "inactive" ? "inactive-to-active":
@@ -1553,7 +1557,7 @@ final class WatchLink: NSObject, ObservableObject, CBCentralManagerDelegate, CBP
             "peripheralState":peripheral.map { String(describing:$0.state) } ?? "none",
             "livenessSupported":peerSupportsLiveness,"awaitingPong":pendingPing != nil,
             "pongCount":pongCount,"remoteRefreshCount":remoteRefreshCount,
-            "displayActivationID":displayActivationID,"displayLastEntrySignal":displayEntrySignal,"displayRenderedSurface":displayRenderedSurface,
+            "displayActivationID":displayActivationID,"displayLastEntrySignal":displayEntrySignal,"displayRenderedSurface":displayRenderedSurface,"vehiclePanelPresented":vehiclePanelPresented,
             "renewalWatchNotified":UserDefaults.standard.string(forKey:"renewalWatchNotified") ?? "",
             "renewalPhoneAcknowledged":UserDefaults.standard.string(forKey:"renewalPhoneAcknowledged") ?? "",
             "continuousRequested":continuousRuntime,"notificationAllowed":notificationAllowed,

@@ -46,7 +46,7 @@ struct VehicleQuickView: View {
             .onChange(of:link.connected) { value in
                 if value && !router.waiting { link.requestVehicleControls() }
             }
-            .onDisappear { router.cancelPending() }
+            .onDisappear { router.viewDidDisappear() }
     }
 }
 struct VehicleQuickSettingsView: View {

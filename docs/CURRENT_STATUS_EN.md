@@ -1,5 +1,7 @@
 # Current versions and remaining work
 
+November 23 follow-up: the owner identified the vehicle-control panel. **Source 0.5.31 / build 65** now dismisses retained panels on background transitions. **The owner still has 0.5.30 / 64 installed** pending development connectivity and unlock. [Scope and changes](VEHICLE_PANEL_0.5.31_EN.md).
+
 Installed **Watch 0.5.30 / build 64** and **Android 0.6.23 / code 45**. Added activation context and a Report screen issue button. [Observed context and new evidence](DISPLAY_EVIDENCE_0.5.30_EN.md). Provisioning expires **2026-11-27 19:52 KST**. Successful renewal now creates one completion notice per device. [Behavior and requirements](RENEWAL_NOTIFICATIONS_0.5.29_EN.md). The November 20 16:00 scheduled attempt failed while waiting for the watch; the subsequent maintenance deployment renewed the signature.
 
 

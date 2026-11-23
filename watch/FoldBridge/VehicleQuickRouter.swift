@@ -4,7 +4,16 @@ import Combine
 /// Runs a user-selected widget control once using a fresh authenticated catalogue.
 final class VehicleQuickRouter: ObservableObject {
     static let shared = VehicleQuickRouter()
-    @Published var presented = false
+    @Published var presented = false {
+        didSet {
+            guard oldValue != presented else { return }
+            panelHasBeenActive = presented && mainSceneActive
+            WatchLink.shared.noteVehiclePanelPresentation(presented)
+        }
+    }
+    private var mainSceneActive = false
+    private var panelHasBeenActive = false
+    private var backgroundDismissal = false
     @Published private(set) var requested: VehicleQuickControl?
     @Published private(set) var message = ""
     @Published private(set) var waiting = false
@@ -58,6 +67,7 @@ final class VehicleQuickRouter: ObservableObject {
         }.store(in:&observations)
     }
     func openControls(source: String = "in-app") {
+        backgroundDismissal = false
         WatchLink.shared.noteDisplayEvent(source == "widget" ? "vehicle.panel.widget":"vehicle.panel.in-app")
         cancelPending();awaitingDispatch = false;requested = nil
         needsAssignment = false;waitingForWidget = false;message = ""
@@ -87,6 +97,7 @@ final class VehicleQuickRouter: ObservableObject {
         objectWillChange.send()
     }
     func run(_ control: VehicleQuickControl) {
+        backgroundDismissal = false
         presented = true
         guard !waiting, !WatchLink.shared.vehicleBusy else { return }
         noticeAttempted = false;noticeAcknowledged = false
@@ -191,5 +202,27 @@ final class VehicleQuickRouter: ObservableObject {
         pending = nil;waiting = false;catalogueRequested = false;preparationDeadline = .distantPast
         recoveringNotice = false;noticeAcknowledged = false;noticePollScheduled = false
     }
-    func dismiss() { cancelPending();presented = false }
+    func setMainSceneActive(_ value: Bool) {
+        mainSceneActive = value
+        if value && presented { panelHasBeenActive = true }
+    }
+    func dismissForBackground() {
+        // A newly delivered widget intent must reach its first foreground scene.
+        // Close only a panel that has already been active and is now leaving it.
+        guard presented, panelHasBeenActive else { return }
+        backgroundDismissal = true
+        presented = false
+        WatchLink.shared.noteDisplayEvent("vehicle.panel.background-dismiss")
+    }
+    func presentationDidDismiss() {
+        WatchLink.shared.noteDisplayEvent(backgroundDismissal ? "vehicle.panel.background-dismiss-finished":"vehicle.panel.dismiss")
+        if !backgroundDismissal { cancelPending() }
+    }
+    func viewDidDisappear() {
+        if !backgroundDismissal { cancelPending() }
+    }
+    func dismiss() {
+        backgroundDismissal = false
+        cancelPending();presented = false
+    }
 }
