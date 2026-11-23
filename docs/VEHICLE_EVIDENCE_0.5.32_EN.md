@@ -18,3 +18,7 @@ App Documents retain 256 records in `watchbridge-vehicle-panels.json` and 16 sna
 ## Deployment
 
 Build completed. Build 65 installation attempts failed with a Mac–watch developer-tunnel timeout. The owner's installed app and private weekly-renewal source stay at 0.5.30 / 64 until an actual installation succeeds. Build 66 deployment results follow below. Registration, vehicle assignments, BLE, location activity and the signing schedule remain intact.
+
+### November 23 installation outcome
+
+REA installation evidence `ev_6f7ffba46f6809ad373d792397de503d40d9004d67e48c6753c6039105a25379` contains inner command exit code 1: `CoreDeviceError 4000 / RemotePairingError 1001`, a developer-network tunnel timeout. **Build 66 is not deployed, and its automatic evidence feature is not yet running on the owner's watch.** Private renewal source and installed metadata remain at build 64. The Mac device-inspection window was closed.
