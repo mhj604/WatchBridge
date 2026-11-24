@@ -20,6 +20,8 @@
 
 ## 현재 사용 안내 / Current guides
 
+- [11월 24일 차량 창 재표시 후속 조사](VEHICLE_FOLLOWUP_2026-11-24_KO.md) · [Vehicle-panel follow-up](VEHICLE_FOLLOWUP_2026-11-24_EN.md)
+
 | 내용 / Topic | 한국어 | English |
 | --- | --- | --- |
 | 현재 버전·파일·진행 상태 / Versions, downloads, status | [기준 문서](CURRENT_STATUS_KO.md) | [Current status](CURRENT_STATUS_EN.md) |
