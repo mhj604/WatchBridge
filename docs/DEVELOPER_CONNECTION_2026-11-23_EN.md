@@ -1,5 +1,7 @@
 # 2026-11-23 — Mac developer-connection failure scope
 
+**Follow-up — 2026-11-24:** Build 66 installation and background launch completed. November 23 failure/pending statements below describe that earlier snapshot. [Latest deployment](DEPLOYMENT_0.5.32_EN.md).
+
 This concerns the owner's Mac developer connection, not a confirmed cause of Galaxy–Watch BLE behavior or unexpected vehicle-panel activation.
 
 ## Observations

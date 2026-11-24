@@ -2,7 +2,7 @@
 
 **[한국어 홈](../README.md)** · **[English home](../README.en.md)** · **[현재 버전·남은 작업](CURRENT_STATUS_KO.md)** · **[Current versions and remaining work](CURRENT_STATUS_EN.md)**
 
-2026-11-21 기준: **Android 0.6.23 / 코드 45 · Watch 0.5.30 / 빌드 64**. Android APK 배포 묶음 태그는 `android-v0.6.23`입니다. 워치는 현재 소스를 자신의 Team으로 서명해 설치합니다. / Android APK release bundle: `android-v0.6.23`; sign current Watch source for your own team.
+2026-11-24 기준: **Android 0.6.23 / 코드 45 · Watch 0.5.32 / 빌드 66**. Android APK 배포 묶음 태그는 `android-v0.6.23`입니다. 워치는 현재 소스를 자신의 Team으로 서명해 설치합니다. / Android APK release bundle: `android-v0.6.23`; sign current Watch source for your own team.
 
 - [서명 갱신 완료 알림 · 워치 0.5.29 / 폰 0.6.23](RENEWAL_NOTIFICATIONS_0.5.29_KO.md) · [Signing completion notifications](RENEWAL_NOTIFICATIONS_0.5.29_EN.md)
 
@@ -15,6 +15,8 @@
 - [워치 0.5.32 차량 창 자동 원인 기록](VEHICLE_EVIDENCE_0.5.32_KO.md) · [Automatic vehicle-panel evidence](VEHICLE_EVIDENCE_0.5.32_EN.md)
 
 - [11월 23일 Mac 개발 연결 실패 범위](DEVELOPER_CONNECTION_2026-11-23_KO.md) · [Developer connection failure scope](DEVELOPER_CONNECTION_2026-11-23_EN.md)
+
+- [0.5.32·빌드 66 설치 완료 기록](DEPLOYMENT_0.5.32_KO.md) · [Build 66 deployment](DEPLOYMENT_0.5.32_EN.md)
 
 ## 현재 사용 안내 / Current guides
 

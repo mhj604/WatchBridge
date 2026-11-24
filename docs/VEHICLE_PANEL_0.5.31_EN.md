@@ -1,5 +1,7 @@
 # Watch 0.5.31 — dismiss retained vehicle panels in the background
 
+**Follow-up — 2026-11-24:** Build 66 installation and background launch completed. November 23 failure/pending statements below describe that earlier snapshot. [Latest deployment](DEPLOYMENT_0.5.32_EN.md).
+
 Watch/widget source **0.5.31 / build 65**; Android **0.6.23 / code 45**. The build completed; subsequent deployment results are recorded below.
 
 ## Narrowed issue

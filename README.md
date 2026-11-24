@@ -4,18 +4,18 @@
 
 갤럭시에 도착한 알림을 **Apple Watch로 Bluetooth LE 직접 전달**하는 Android·watchOS 앱입니다. 알림 전달에는 서버·인터넷·아이폰 중계·루팅·운동/오디오 세션을 사용하지 않습니다. 워치 초기 설정과 앱 설치 준비는 별도입니다.
 
-## 설치와 업데이트 — 2026-11-21 기준
+## 설치와 업데이트 — 2026-11-24 기준
 
 | 항목 | 현재 버전 / 받는 곳 |
 | --- | --- |
 | Android | **0.6.23-local / 코드 45** — [APK 다운로드](https://github.com/mhj604/WatchBridge/releases/download/android-v0.6.23/WatchBridge-0.6.23.apk) |
-| 워치 앱·차량 위젯 | **0.5.30 / 빌드 64** — [Xcode 프로젝트](watch/FoldBridge.xcodeproj), 자신의 Team으로 서명·설치 |
+| 워치 앱·차량 위젯 | **0.5.32 / 빌드 66** — [Xcode 프로젝트](watch/FoldBridge.xcodeproj), 자신의 Team으로 서명·설치 |
 | 처음 설치 | [설치·등록 순서](docs/QUICK_START_KO.md) |
 | 기존 사용자 | 같은 서명 키·Bundle ID·Team으로 덮어 업데이트. 등록을 삭제하지 않습니다. |
 | 연결 문제 | [문제 해결](docs/TROUBLESHOOTING_KO.md) · [현재 상태와 미완료 범위](docs/CURRENT_STATUS_KO.md) |
 
 
-워치 소스는 **0.5.32 / 빌드 66**입니다. 차량 창 재표시 경로 정리와, 누르지 않은 창의 재등장 원인을 좁힐 자동 기록을 추가했습니다. 소유자 설치본은 아직 0.5.30 / 64이며 개발 연결 문제로 업데이트가 대기 중입니다. [기록 내용과 한계](docs/VEHICLE_EVIDENCE_0.5.32_KO.md).
+워치 **0.5.32 / 빌드 66 설치 완료**. 차량 창 재표시 경로 정리와 자동 원인 기록이 적용됐습니다. 기존 등록·차량 설정은 유지했습니다. 최초 자동 열림 원인은 후속 기록으로 조사합니다. [설치 기록](docs/DEPLOYMENT_0.5.32_KO.md) · [기록 내용과 한계](docs/VEHICLE_EVIDENCE_0.5.32_KO.md).
 
 APK는 `android-v0.6.23` 배포 묶음에 있습니다. 묶음 태그·Android 버전·워치 버전은 서로 다릅니다. 과거 버전 파일은 [Releases](https://github.com/mhj604/WatchBridge/releases)에 보존합니다.
 

@@ -1,5 +1,7 @@
 # Watch 0.5.32 — automatic vehicle-panel evidence
 
+**Follow-up — 2026-11-24:** Build 66 installation and background launch completed. November 23 failure/pending statements below describe that earlier snapshot. [Latest deployment](DEPLOYMENT_0.5.32_EN.md).
+
 Watch/widget source **0.5.32 / build 66**; Android remains 0.6.23 / code 45.
 
 ## What remains unknown

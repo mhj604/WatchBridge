@@ -4,18 +4,18 @@
 
 Forward Galaxy notifications **directly to Apple Watch over Bluetooth LE**. Notification delivery needs no server, internet, iPhone relay, root access, or workout/audio session. Initial watch setup and app installation are separate.
 
-## Install or update — as of 2026-11-21
+## Install or update — as of 2026-11-24
 
 | Component | Current version / location |
 | --- | --- |
 | Android | **0.6.23-local / code 45** — [Download APK](https://github.com/mhj604/WatchBridge/releases/download/android-v0.6.23/WatchBridge-0.6.23.apk) |
-| Watch app and vehicle widget | **0.5.30 / build 64** — [Xcode project](watch/FoldBridge.xcodeproj); sign for your own team/device |
+| Watch app and vehicle widget | **0.5.32 / build 66** — [Xcode project](watch/FoldBridge.xcodeproj); sign for your own team/device |
 | New installation | [Step-by-step setup](docs/QUICK_START_EN.md) |
 | Existing users | Update in place with the same signing key and watch Bundle ID/team. Preserve registration. |
 | Connection problems | [Troubleshooting](docs/TROUBLESHOOTING_EN.md) · [Current status and unfinished scope](docs/CURRENT_STATUS_EN.md) |
 
 
-Watch source is **0.5.32 / build 66**, adding retained-panel cleanup and automatic evidence for unexpected vehicle screens. The owner's installed app remains 0.5.30 / 64 while developer connectivity blocks deployment. [Records and limits](docs/VEHICLE_EVIDENCE_0.5.32_EN.md).
+Watch **0.5.32 / build 66 is installed**, with retained-panel cleanup and automatic evidence. Registration and vehicle assignments remain intact. The first unexpected-opening cause remains under investigation. [Deployment](docs/DEPLOYMENT_0.5.32_EN.md) · [Records and limits](docs/VEHICLE_EVIDENCE_0.5.32_EN.md).
 
 The APK belongs to release bundle `android-v0.6.23`. Bundle tags, Android versions and Watch versions are different. Older artifacts remain in [Releases](https://github.com/mhj604/WatchBridge/releases).
 
