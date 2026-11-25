@@ -49,7 +49,7 @@ Version 0.6.22 also includes button-free automatic GATT recovery for the unclaim
 | Connection persistence/recovery | **Physical returns: 3/3 succeeded.** Three controlled radio interruptions and a subsequent ten-minute observation also passed. Investigate any new symptoms using app-owned records while retaining registration. |
 | Multi-hour passcode lock | **Added back to remaining work.** Check whether authentication and new-notification delivery persist or automatically recover after several hours/overnight passcode lock, without opening the app or refreshing. This differs from the ten-minute observation; no additional test has been performed yet. |
 | Free automatic signing renewal | **Active.** A configured weekly Mac task is different from watch-only renewal. A usable free renewal-and-application path using only watch internet has not been established. [Renewal conditions](AUTO_RENEW_EN.md). |
-| Unexpected main-screen display | **Deferred at the owner's request.** Continue from app-owned display records after further everyday-use observations. Location activity has not been established as the cause. [Build 60 records](DISPLAY_INVESTIGATION_0.5.26_EN.md). |
+| Unexpected main-screen display | **Reported again on build 66 on November 25; investigation resumed.** REA records repeated inactive/active transitions in the same process. The initial foreground trigger and any causal role of location activity remain unknown. [Current observations](MAIN_SCREEN_2026-11-25_EN.md). |
 
 Restoration after OS process termination is an untested reference condition, not a newly discovered fault, and is excluded from the agreed required task list.
 

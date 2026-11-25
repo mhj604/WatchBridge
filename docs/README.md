@@ -20,6 +20,8 @@
 
 ## 현재 사용 안내 / Current guides
 
+- [11월 25일 메인 화면 재등장 조사](MAIN_SCREEN_2026-11-25_KO.md) · [Main-screen reappearance](MAIN_SCREEN_2026-11-25_EN.md)
+
 - [11월 24일 차량 창 재표시 후속 조사](VEHICLE_FOLLOWUP_2026-11-24_KO.md) · [Vehicle-panel follow-up](VEHICLE_FOLLOWUP_2026-11-24_EN.md)
 
 | 내용 / Topic | 한국어 | English |
