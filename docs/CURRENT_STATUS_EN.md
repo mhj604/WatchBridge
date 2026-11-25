@@ -1,5 +1,7 @@
 # Current versions and remaining work
 
+**2026-11-25: source/signed build 0.5.33 / 67 ready; owner installation remains 0.5.32 / 66.** Custom notification-content taps no longer open the main screen, and initial foreground context is automatically frozen. Installation awaits developer-tunnel access; the first OS trigger remains unknown. [Changes, evidence and deployment scope](FOREGROUND_ENTRY_0.5.33_EN.md).
+
 **2026-11-24: Watch 0.5.32 / build 66 installed**; Android remains 0.6.23 / code 45. The developer channel recovered, original records were preserved and the update installed in place. App-owned state records background connection/authentication and preserved registration/vehicle settings. [Deployment](DEPLOYMENT_0.5.32_EN.md).
 
 This installs [automatic vehicle-panel evidence](VEHICLE_EVIDENCE_0.5.32_EN.md) and [retained-panel cleanup](VEHICLE_PANEL_0.5.31_EN.md). The first-opening cause remains unresolved. The earlier November 23 deployment block is superseded by this installation.
@@ -12,14 +14,14 @@ Provisioning still expires **2026-11-27 19:52 KST**. This deployment did not ext
 
 [한국어](CURRENT_STATUS_KO.md) · **English** · [Install and connect](QUICK_START_EN.md) · [All guides](README.md)
 
-As of **2026-11-24 KST**. This page distinguishes current source, the owner's installation records, and published downloads. It does not report another user's installed version. “Current”, “failed”, and “complete” in version-specific investigations describe their historical snapshot.
+As of **2026-11-25 KST**. This page distinguishes current source, the owner's installation records, and published downloads. It does not report another user's installed version. “Current”, “failed”, and “complete” in version-specific investigations describe their historical snapshot.
 
 ## Downloads and source
 
 | Component | Version / location |
 | --- | --- |
 | Android app | **0.6.23-local / code 45** — [WatchBridge-0.6.23.apk](https://github.com/mhj604/WatchBridge/releases/download/android-v0.6.23/WatchBridge-0.6.23.apk) |
-| Watch app and vehicle widget | **0.5.32 / build 66** — [local-ble source](https://github.com/mhj604/WatchBridge/tree/local-ble), `watch/FoldBridge.xcodeproj` |
+| Watch app and vehicle widget source | **0.5.33 / build 67** — [local-ble source](https://github.com/mhj604/WatchBridge/tree/local-ble), `watch/FoldBridge.xcodeproj`. The owner's installed build remains 66. |
 | Source branches | `main`, `local-ble`, and `fix/watch-background-reconnect`. Documentation-only commits may retain the same app version. |
 | APK release tag | `android-v0.6.23` names the release bundle. Its Android APK is 0.6.23, distinct from the Watch version. |
 | Owner's installed Watch source | Build 66 — automatic panel evidence and retained-panel cleanup installed. Build 63 renewal receipts and notification settings remain preserved. |
@@ -49,7 +51,7 @@ Version 0.6.22 also includes button-free automatic GATT recovery for the unclaim
 | Connection persistence/recovery | **Physical returns: 3/3 succeeded.** Three controlled radio interruptions and a subsequent ten-minute observation also passed. Investigate any new symptoms using app-owned records while retaining registration. |
 | Multi-hour passcode lock | **Added back to remaining work.** Check whether authentication and new-notification delivery persist or automatically recover after several hours/overnight passcode lock, without opening the app or refreshing. This differs from the ten-minute observation; no additional test has been performed yet. |
 | Free automatic signing renewal | **Active.** A configured weekly Mac task is different from watch-only renewal. A usable free renewal-and-application path using only watch internet has not been established. [Renewal conditions](AUTO_RENEW_EN.md). |
-| Unexpected main-screen display | **Reported again on build 66 on November 25; investigation resumed.** REA records repeated inactive/active transitions in the same process. The initial foreground trigger and any causal role of location activity remain unknown. [Current observations](MAIN_SCREEN_2026-11-25_EN.md). |
+| Unexpected main-screen display | **Under investigation.** Build 67 adds notification-content handling and initial foreground context; installation is pending. The first OS trigger remains unknown. [Changes and remaining scope](FOREGROUND_ENTRY_0.5.33_EN.md). |
 
 Restoration after OS process termination is an untested reference condition, not a newly discovered fault, and is excluded from the agreed required task list.
 

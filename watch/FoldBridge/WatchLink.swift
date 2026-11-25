@@ -70,6 +70,14 @@ final class WatchLink: NSObject, ObservableObject, CBCentralManagerDelegate, CBP
     private var displayActivationID = "none"
     private var displayActivationUptime: TimeInterval?
     private var displayRenderedSurface = "main"
+    private var displayForegroundID = "none"
+    private var displayForegroundOpen = false
+    private var displayForegroundUptime: TimeInterval?
+    private var displayForegroundDate: Date?
+    private var displayForegroundFirstActive = false
+    private var displayForegroundSnapshot: [String:Any]?
+    private var displayNotificationViews = Set<UUID>()
+    private var displayLocationSessionID = "none"
     private var vehiclePanelPresented = false
     private var vehiclePanelViewVisible = false
     private var vehiclePanelRequestID = "none"
@@ -1272,6 +1280,7 @@ final class WatchLink: NSObject, ObservableObject, CBCentralManagerDelegate, CBP
         if callback { locationActivityCallbacks += 1 }
         if let state, state != locationActivityState {
             locationActivityState = state;trace("location.activity."+state)
+            noteDisplayEvent("location.activity."+state)
         } else { writeDiagnostics() }
     }
     func selectProfile(_ value: PhoneProfile) {
@@ -1474,9 +1483,20 @@ final class WatchLink: NSObject, ObservableObject, CBCentralManagerDelegate, CBP
         vehiclePanelViewVisible = visible
         noteDisplayEvent(visible ? "vehicle.panel.view.appear":"vehicle.panel.view.disappear")
     }
+    func noteNotificationDetailView(_ visible: Bool, id: UUID) {
+        let changed: Bool
+        if visible { changed = displayNotificationViews.insert(id).inserted }
+        else { changed = displayNotificationViews.remove(id) != nil }
+        if changed { noteDisplayEvent(visible ? "notification.detail.appear":"notification.detail.disappear") }
+    }
+    func noteLocationSessionCreation(restoring: Bool, replacing: Bool) {
+        displayLocationSessionID = UUID().uuidString
+        noteDisplayEvent(restoring ? "location.session.restore-request":"location.session.create-request",
+                         details:["replacingExistingSession":replacing])
+    }
     // App-owned observations, not a claim to know private watchOS activation reasons.
     // Keep activation summaries apart from the noisier lifecycle journal.
-    func noteDisplayEvent(_ event: String) {
+    func noteDisplayEvent(_ event: String, details: [String:Any] = [:]) {
         let uptime = ProcessInfo.processInfo.systemUptime
         let native = applicationStateName
         let entrySignal = event == "notification.open" || event == "notification.renewal.open"
@@ -1484,6 +1504,16 @@ final class WatchLink: NSObject, ObservableObject, CBCentralManagerDelegate, CBP
         if entrySignal { displayEntrySignal = event; displayEntryUptime = uptime }
         let activated = native == "active" && displayPreviousNativeState != "active"
         if activated { displayActivationID = UUID().uuidString; displayActivationUptime = uptime }
+        // Only main-interface callbacks start an episode. A custom notification
+        // can run in this process without bringing the main scene to the front.
+        let beginsForeground = event == "delegate.will-enter-foreground" ||
+            (!displayForegroundOpen && (event == "scene.active" || event == "delegate.did-become-active"))
+        if beginsForeground {
+            displayForegroundID = UUID().uuidString
+            displayForegroundOpen = true; displayForegroundUptime = uptime
+            displayForegroundDate = Date()
+            displayForegroundFirstActive = false
+        }
         let entryAge = displayEntryUptime.map { max(0,uptime - $0) } ?? -1
         let activationAge = displayActivationUptime.map { max(0,uptime - $0) } ?? -1
         let formatter = ISO8601DateFormatter()
@@ -1491,7 +1521,7 @@ final class WatchLink: NSObject, ObservableObject, CBCentralManagerDelegate, CBP
         let source = ProcessInfo.processInfo.environment["WATCHBRIDGE_LAUNCH_SOURCE"]
         let launchSource = ["weekly-renewal","maintenance-background"].contains(source ?? "") ? source!:"unspecified"
         displayEventSequence += 1
-        var record: [String:Any] = ["schema":3,"at":formatter.string(from:Date()),"process":processID,
+        var record: [String:Any] = ["schema":4,"at":formatter.string(from:Date()),"process":processID,
             "build":Bundle.main.object(forInfoDictionaryKey:"CFBundleVersion") as? String ?? "",
             "sequence":displayEventSequence,"event":event,"scenePhase":displayScenePhase,
             "applicationStateName":native,"previousObservedNativeState":displayPreviousNativeState,
@@ -1502,6 +1532,12 @@ final class WatchLink: NSObject, ObservableObject, CBCentralManagerDelegate, CBP
             "launchSource":launchSource,"runningInDock":WKApplication.shared().isApplicationRunningInDock,
             "renderedSurface":displayRenderedSurface,"vehiclePanelPresented":vehiclePanelPresented,"connected":connected,"authenticated":authenticated,"stage":stage,
             "continuousRequested":continuousRuntime,"locationActivityState":locationActivityState]
+        record["foregroundEpisodeID"] = displayForegroundID
+        record["foregroundEpisodeOpen"] = displayForegroundOpen
+        record["foregroundEpisodeAgeSeconds"] = displayForegroundUptime.map { max(0,uptime - $0) } ?? -1
+        record["notificationDetailViewCount"] = displayNotificationViews.count
+        record["locationSessionID"] = displayLocationSessionID
+        if !details.isEmpty { record["details"] = details }
         record["vehiclePanelViewVisible"] = vehiclePanelViewVisible
         record["vehiclePanelRequestID"] = vehiclePanelRequestID
         record["vehiclePanelRequestSource"] = vehiclePanelRequestSource
@@ -1513,6 +1549,24 @@ final class WatchLink: NSObject, ObservableObject, CBCentralManagerDelegate, CBP
                 displayPreviousNativeState == "background" ? "background-to-active":"first-observed-active"
             // No public callback identifies wrist raise, a Crown launch or every OS restoration.
             record["activationCause"] = "not-provided-by-os"
+        }
+        // Freeze BEFORE adding the foreground trigger to the rotating journal.
+        // Repeated wrist activations update the same episode, preserving its start.
+        if beginsForeground {
+            displayForegroundSnapshot = ["schema":1,"id":displayForegroundID,"trigger":record,
+                "cause":"not-determined","physicalTouch":"not-observable",
+                "before":recentDisplayRecords("watchbridge-display-events.json",64),
+                "connectionBefore":recentDisplayRecords("foldbridge-events.json",32),
+                "observations":[[String:Any]]()]
+        }
+        let firstMainActive = event == "scene.active" && !displayForegroundFirstActive
+        if firstMainActive { displayForegroundFirstActive = true }
+        let endsForeground = event == "delegate.did-enter-background" || event == "scene.background"
+        let nearForegroundStart = displayForegroundDate.map { Date().timeIntervalSince($0) <= 15 } ?? false
+        if beginsForeground || firstMainActive ||
+            (displayForegroundSnapshot != nil && ((entrySignal && (displayForegroundOpen || nearForegroundStart)) || endsForeground ||
+                (nearForegroundStart && (event.hasPrefix("notification.") || event.hasPrefix("location."))))) {
+            preserveForegroundContext(record)
         }
         appendDisplayRecord(record,file:"watchbridge-display-events.json",limit:1024)
         if event.hasPrefix("vehicle.panel.") || event == "vehicle.quick.intent" {
@@ -1528,7 +1582,31 @@ final class WatchLink: NSObject, ObservableObject, CBCentralManagerDelegate, CBP
             record["summaryKind"] = activated ? "activation":"nearby-entry-signal"
             appendDisplayRecord(record,file:"watchbridge-display-activations.json",limit:256)
         }
+        if endsForeground { displayForegroundOpen = false }
         displayPreviousNativeState = native; displayPreviousEventUptime = uptime
+    }
+    private func recentDisplayRecords(_ file: String, _ count: Int) -> [[String:Any]] {
+        guard let folder = FileManager.default.urls(for:.documentDirectory,in:.userDomainMask).first,
+              let data = try? Data(contentsOf:folder.appendingPathComponent(file)),
+              let entries = try? JSONSerialization.jsonObject(with:data) as? [[String:Any]] else { return [] }
+        return Array(entries.suffix(count))
+    }
+    private func preserveForegroundContext(_ observation: [String:Any]) {
+        guard var snapshot = displayForegroundSnapshot,
+              let folder = FileManager.default.urls(for:.documentDirectory,in:.userDomainMask).first else { return }
+        var observations = snapshot["observations"] as? [[String:Any]] ?? []
+        observations.append(observation)
+        snapshot["observations"] = Array(observations.suffix(32))
+        displayForegroundSnapshot = snapshot
+        let url = folder.appendingPathComponent("watchbridge-foreground-episodes.json")
+        var episodes = recentDisplayRecords("watchbridge-foreground-episodes.json",32)
+        if let index = episodes.lastIndex(where:{ $0["id"] as? String == displayForegroundID }) {
+            episodes[index] = snapshot
+        } else { episodes.append(snapshot) }
+        if let data = try? JSONSerialization.data(withJSONObject:Array(episodes.suffix(32)),options:[.sortedKeys]) {
+            try? FileManager.default.createDirectory(at:folder,withIntermediateDirectories:true)
+            try? data.write(to:url,options:.atomic)
+        }
     }
     private func freezeVehiclePanelContext(trigger: [String:Any]) {
         guard let folder = FileManager.default.urls(for:.documentDirectory,in:.userDomainMask).first else { return }

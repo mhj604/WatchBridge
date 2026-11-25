@@ -107,6 +107,7 @@ final class LocationKeepAlive: NSObject, ObservableObject, CLLocationManagerDele
         sessionNeedsForeground = false
         // Keep this object for the full user-enabled feature span. Never put it
         // in a local scope whose deallocation would invalidate the activity.
+        WatchLink.shared.noteLocationSessionCreation(restoring:restoring,replacing:replacing)
         activity = CLBackgroundActivitySession()
         if !createdInBackground { UserDefaults.standard.set(true,forKey:preparedKey) }
         status = restoring ? "위치 연결 유지 세션 복원 요청됨":"위치 세션 요청됨 · 갱신 대기"
@@ -181,8 +182,8 @@ final class AppDelegate: NSObject, WKApplicationDelegate, UNUserNotificationCent
         location.restoreAtLaunch()
         UNUserNotificationCenter.current().delegate = self
         UNUserNotificationCenter.current().setNotificationCategories([
-            UNNotificationCategory(identifier:RelayCategory.textOnly,actions:[],intentIdentifiers:[],options:[]),
-            UNNotificationCategory(identifier:RelayCategory.withSourceIcon,actions:[],intentIdentifiers:[],options:[])
+            UNNotificationCategory(identifier:RelayCategory.textOnly,actions:[],intentIdentifiers:[],options:[.customDismissAction]),
+            UNNotificationCategory(identifier:RelayCategory.withSourceIcon,actions:[],intentIdentifiers:[],options:[.customDismissAction])
         ])
         WatchLink.shared.resumeSavedConnection()
         if UserDefaults.standard.string(forKey:"vehicleWidgetLayout") != "panel.v1" {
@@ -222,6 +223,7 @@ final class AppDelegate: NSObject, WKApplicationDelegate, UNUserNotificationCent
     }
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions)->Void) {
         DispatchQueue.main.async {
+            WatchLink.shared.noteDisplayEvent("notification.foreground.present")
             let info = notification.request.content.userInfo
             if let id = info["fb_id"] as? String, let revision = info["fb_rev"] as? String { WatchLink.shared.remember(id,revision) }
             completionHandler([.banner,.list,.sound])
@@ -253,6 +255,10 @@ final class AppDelegate: NSObject, WKApplicationDelegate, UNUserNotificationCent
             vehicleQuick.setMainSceneActive(phase == .active)
             if phase == .background { vehicleQuick.dismissForBackground() }
             if phase == .active { LocationKeepAlive.shared.resumeIfRequested() }
+        }.onOpenURL { _ in
+            link.noteDisplayEvent("entry.swiftui-url")
+        }.onContinueUserActivity(NSUserActivityTypeBrowsingWeb) { _ in
+            link.noteDisplayEvent("entry.swiftui-web-activity")
         } }
         WKNotificationScene(controller:CompactNotificationController.self,category:RelayCategory.withSourceIcon)
     }
@@ -445,6 +451,9 @@ enum RelayCategory {
 
 final class CompactNotificationController: WKUserNotificationHostingController<CompactNotificationView> {
     private var content: UNNotificationContent?
+    // A tap on forwarded message content must not open the connection screen.
+    // watchOS still owns explicit app-icon/sash launches and the dismiss control.
+    override class var isInteractive: Bool { true }
     override var body: CompactNotificationView { CompactNotificationView(content:content) }
     override func didReceive(_ notification: UNNotification) {
         content = notification.request.content
@@ -454,6 +463,7 @@ final class CompactNotificationController: WKUserNotificationHostingController<C
 
 struct CompactNotificationView: View {
     let content: UNNotificationContent?
+    @State private var displayViewID = UUID()
     private let iconSize: CGFloat = 24
     @ScaledMetric(relativeTo:.body) private var textSize: CGFloat = 16
     private var layoutWidth: CGFloat { max(100,WKInterfaceDevice.current().screenBounds.width-32) }
@@ -520,6 +530,10 @@ struct CompactNotificationView: View {
             // Keep the icon outside text measurement; preserve its full rounded outline.
             .padding(.top,topAdjustment)
             .padding(.bottom,bottomAdjustment)
+            .contentShape(Rectangle())
+            .onTapGesture { WatchLink.shared.noteDisplayEvent("notification.detail.content-touch") }
+            .onAppear { WatchLink.shared.noteNotificationDetailView(true,id:displayViewID) }
+            .onDisappear { WatchLink.shared.noteNotificationDetailView(false,id:displayViewID) }
         }
     }
 }

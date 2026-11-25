@@ -4,18 +4,18 @@
 
 Forward Galaxy notifications **directly to Apple Watch over Bluetooth LE**. Notification delivery needs no server, internet, iPhone relay, root access, or workout/audio session. Initial watch setup and app installation are separate.
 
-## Install or update — as of 2026-11-24
+## Install or update — as of 2026-11-25
 
 | Component | Current version / location |
 | --- | --- |
 | Android | **0.6.23-local / code 45** — [Download APK](https://github.com/mhj604/WatchBridge/releases/download/android-v0.6.23/WatchBridge-0.6.23.apk) |
-| Watch app and vehicle widget | **0.5.32 / build 66** — [Xcode project](watch/FoldBridge.xcodeproj); sign for your own team/device |
+| Watch app and vehicle widget source | **0.5.33 / build 67** — [Xcode project](watch/FoldBridge.xcodeproj); sign for your own team/device |
 | New installation | [Step-by-step setup](docs/QUICK_START_EN.md) |
 | Existing users | Update in place with the same signing key and watch Bundle ID/team. Preserve registration. |
 | Connection problems | [Troubleshooting](docs/TROUBLESHOOTING_EN.md) · [Current status and unfinished scope](docs/CURRENT_STATUS_EN.md) |
 
 
-Watch **0.5.32 / build 66 is installed**, with retained-panel cleanup and automatic evidence. Registration and vehicle assignments remain intact. The first unexpected-opening cause remains under investigation. [Deployment](docs/DEPLOYMENT_0.5.32_EN.md) · [Records and limits](docs/VEHICLE_EVIDENCE_0.5.32_EN.md).
+The owner's last successful installation remains **0.5.32 / build 66**. **0.5.33 / 67** prevents custom notification-content taps from opening the main screen and freezes initial foreground context. It is built; installation awaits developer connectivity. Registration and background connection mechanisms remain unchanged. The initial unexpected-opening trigger is still unknown. [Changes and deployment status](docs/FOREGROUND_ENTRY_0.5.33_EN.md).
 
 The APK belongs to release bundle `android-v0.6.23`. Bundle tags, Android versions and Watch versions are different. Older artifacts remain in [Releases](https://github.com/mhj604/WatchBridge/releases).
 
@@ -27,7 +27,7 @@ open watch/FoldBridge.xcodeproj
 
 Initially use phone **Settings → Pair a new watch** and watch **Connect phone → Find phone**, then compare codes. Later connections use saved registration. Use **Connect watch** when the phone service is off, or **Refresh connection** while it is running. Notifications predating reconnection are not replayed.
 
-Authentication and read delivery were recorded in locked/background conditions, and physical return has produced automatic reconnection. **This does not establish reliable multi-hour lock, repeated range recovery or uninterrupted connections.** Unexpected main-screen display is deferred pending everyday-use observations. [Current priorities](docs/CURRENT_STATUS_EN.md#priorities-and-unfinished-work).
+Authentication and read delivery were recorded in locked/background conditions, and physical return has produced automatic reconnection. **This does not establish reliable multi-hour lock, repeated range recovery or uninterrupted connections.** Investigation of unexpected main-screen display resumed following the November 25 recurrence. [Current priorities](docs/CURRENT_STATUS_EN.md#priorities-and-unfinished-work).
 
 Visible branding is **WatchBridge**. Installation IDs, keychain/storage keys, BLE UUIDs and source paths stay stable to preserve registration and vehicle settings. Source and guides are reflected in `main`, `local-ble`, and `fix/watch-background-reconnect`. `relay/`, `windows/`, and `legacy/` preserve older designs.
 
