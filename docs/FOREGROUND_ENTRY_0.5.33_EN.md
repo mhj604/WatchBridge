@@ -24,6 +24,8 @@ Notification categories now enable `customDismissAction`. Without it the existin
 
 Source and signed build are **0.5.33 / 67**. The owner's last successful installation remains **0.5.32 / 66**; the new installation awaits developer connectivity. Private weekly-renewal source/state still target installed build 66. Registration, vehicle assignments, BLE/crypto and background connection mechanisms remain unchanged.
 
+After the owner reconnected Watch Wi-Fi and prepared developer connectivity, both status and display retrieval still failed at the same tunnel (`ev_7c2daed097734c06206c1bf51f345699869c209a900184f1c0420392cfb5d19f`, `ev_78d1cfcb07e3a41baaf079912f66b84d39f56de22717c222b651c04dcc025583`). The Galaxy ADB device list was also empty, leaving no connected alternative app-record path. No app-launch command or BLE-service stop was issued during this follow-up. Mac Device Hub was closed.
+
 **The initial OS foreground trigger remains unknown.** This change closes a known content-tap entry route and improves first-transition evidence. It does not establish complete resolution or a new successful physical-device background observation. No system logs, administrator authentication, vehicle commands or separate QA were used.
 
 REA evidence: retrieval `ev_d77b82013b7c8a03dcd9a2e921a2628ff8a70b1e23e63aee86103f6ce0e5ae84`, installation failure `ev_0b3317ec86f2e4543a844e7c1bd01e3e8940e2b08d98486733c784a1b222329b`, retrieval after service restart `ev_805056439f1ffa4340c0f9cca0fb019e59999c2f68e1a3a6b1878e8083d8569a`. Raw evidence remains local.
