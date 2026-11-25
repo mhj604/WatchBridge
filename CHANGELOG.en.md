@@ -2,7 +2,7 @@
 
 ## 2026-11-25 — Watch 0.5.33 / build 67 · Foreground entry and notification content
 
-Custom source-icon notification-content taps no longer perform the default main-screen launch. Freeze initial foreground context separately and distinguish notification presentation, disappearance, dismissal, location-object creation and SwiftUI entry markers. Preserve BLE, location-session lifetime, registration and vehicle assignments. Signed build complete; owner installation awaits developer connectivity. Complete unexpected-opening resolution is not established. [REA investigation and scope](docs/FOREGROUND_ENTRY_0.5.33_EN.md).
+Custom source-icon notification-content taps no longer perform the default main-screen launch. Freeze initial foreground context separately and distinguish notification presentation, disappearance, dismissal, location-object creation and SwiftUI entry markers. Preserve BLE, location-session lifetime, registration and vehicle assignments. Installed after the initial developer-channel failure; the new process connected/authenticated without an app-launch command. Complete unexpected-opening resolution is not established. [REA investigation](docs/FOREGROUND_ENTRY_0.5.33_EN.md) · [Deployment](docs/DEPLOYMENT_0.5.33_EN.md).
 
 ## 2026-11-20 — Android 0.6.22 / code 44 · State resynchronization
 

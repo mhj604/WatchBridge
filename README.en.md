@@ -15,7 +15,7 @@ Forward Galaxy notifications **directly to Apple Watch over Bluetooth LE**. Noti
 | Connection problems | [Troubleshooting](docs/TROUBLESHOOTING_EN.md) · [Current status and unfinished scope](docs/CURRENT_STATUS_EN.md) |
 
 
-The owner's last successful installation remains **0.5.32 / build 66**. **0.5.33 / 67** prevents custom notification-content taps from opening the main screen and freezes initial foreground context. It is built; installation awaits developer connectivity. Registration and background connection mechanisms remain unchanged. The initial unexpected-opening trigger is still unknown. [Changes and deployment status](docs/FOREGROUND_ENTRY_0.5.33_EN.md).
+**0.5.33 / build 67 is installed** on the owner's Watch. It prevents custom notification-content taps from opening the main screen and freezes initial foreground context. Bluetooth restoration, connection and authentication were recorded without an app-launch command; registration and vehicle settings remain intact. The initial unexpected-opening trigger is still unknown. [Deployment and observation scope](docs/DEPLOYMENT_0.5.33_EN.md).
 
 The APK belongs to release bundle `android-v0.6.23`. Bundle tags, Android versions and Watch versions are different. Older artifacts remain in [Releases](https://github.com/mhj604/WatchBridge/releases).
 

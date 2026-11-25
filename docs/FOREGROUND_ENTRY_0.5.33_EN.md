@@ -1,5 +1,7 @@
 # 0.5.33 / build 67 — initial foreground evidence and notification-content handling
 
+> Follow-up: developer access recovered later that day and **0.5.33 / build 67 was installed**. Pending-install statements below describe earlier attempts. [Deployment and observation scope](DEPLOYMENT_0.5.33_EN.md).
+
 ## Investigation scope
 
 The November 25 build-66 REA records distinguish initial foreground entry from repeated inactive/active transitions. Foreground callbacks at 12:42:19 and 12:50:39 KST followed notification-detail receipt by approximately 17 and 4 seconds. Receipt is neither confirmed view appearance nor a tap. It does not establish notification causation or a physical user action. BLE was already authenticated and location activity eligible. [Earlier observations](MAIN_SCREEN_2026-11-25_EN.md).

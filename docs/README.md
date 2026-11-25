@@ -2,7 +2,7 @@
 
 **[한국어 홈](../README.md)** · **[English home](../README.en.md)** · **[현재 버전·남은 작업](CURRENT_STATUS_KO.md)** · **[Current versions and remaining work](CURRENT_STATUS_EN.md)**
 
-2026-11-25 기준: **Android 0.6.23 / 코드 45 · Watch 소스 0.5.33 / 빌드 67, 소유자 설치 0.5.32 / 66**. 새 워치 설치는 개발 연결 복구 대기입니다. Android APK 배포 묶음 태그는 `android-v0.6.23`입니다. / Watch source 0.5.33/67; owner installation remains 0.5.32/66 pending developer connectivity. Android APK release bundle: `android-v0.6.23`.
+2026-11-25 기준: **Android 0.6.23 / 코드 45 · Watch 소스·소유자 설치 0.5.33 / 빌드 67**. Android APK 배포 묶음 태그는 `android-v0.6.23`입니다. / Watch source and owner installation: 0.5.33/67. Android APK release bundle: `android-v0.6.23`.
 
 - [서명 갱신 완료 알림 · 워치 0.5.29 / 폰 0.6.23](RENEWAL_NOTIFICATIONS_0.5.29_KO.md) · [Signing completion notifications](RENEWAL_NOTIFICATIONS_0.5.29_EN.md)
 
@@ -19,6 +19,8 @@
 - [0.5.32·빌드 66 설치 완료 기록](DEPLOYMENT_0.5.32_KO.md) · [Build 66 deployment](DEPLOYMENT_0.5.32_EN.md)
 
 ## 현재 사용 안내 / Current guides
+
+- [0.5.33·빌드 67 설치 완료](DEPLOYMENT_0.5.33_KO.md) · [Build 67 deployment](DEPLOYMENT_0.5.33_EN.md)
 
 - [0.5.33 첫 전면 진입 기록·알림 본문 진입 방지](FOREGROUND_ENTRY_0.5.33_KO.md) · [Initial foreground evidence and notification taps](FOREGROUND_ENTRY_0.5.33_EN.md)
 

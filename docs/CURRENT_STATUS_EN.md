@@ -1,16 +1,16 @@
 # Current versions and remaining work
 
-**2026-11-25: source/signed build 0.5.33 / 67 ready; owner installation remains 0.5.32 / 66.** Custom notification-content taps no longer open the main screen, and initial foreground context is automatically frozen. Installation awaits developer-tunnel access; the first OS trigger remains unknown. [Changes, evidence and deployment scope](FOREGROUND_ENTRY_0.5.33_EN.md).
+**2026-11-25: Watch 0.5.33 / build 67 installed.** Custom notification-content handling and initial foreground snapshots are applied. The new process recorded Bluetooth restoration, connection and authentication without an app-launch command; registration and vehicle settings are preserved. The first OS trigger remains unknown. [Deployment and observation scope](DEPLOYMENT_0.5.33_EN.md).
 
 **2026-11-24: Watch 0.5.32 / build 66 installed**; Android remains 0.6.23 / code 45. The developer channel recovered, original records were preserved and the update installed in place. App-owned state records background connection/authentication and preserved registration/vehicle settings. [Deployment](DEPLOYMENT_0.5.32_EN.md).
 
 This installs [automatic vehicle-panel evidence](VEHICLE_EVIDENCE_0.5.32_EN.md) and [retained-panel cleanup](VEHICLE_PANEL_0.5.31_EN.md). The first-opening cause remains unresolved. The earlier November 23 deployment block is superseded by this installation.
 
-Provisioning still expires **2026-11-27 19:52 KST**. This deployment did not extend expiration or create another renewal notice. The private weekly source now matches build 66. [Renewal notifications](RENEWAL_NOTIFICATIONS_0.5.29_EN.md).
+Provisioning still expires **2026-11-27 19:52 KST**. Expiration did not extend, so no new renewal notice was created. Private weekly source and installed metadata now match build 67. [Renewal notifications](RENEWAL_NOTIFICATIONS_0.5.29_EN.md).
 
 [Watch 0.5.28 locked-callback and range-recovery improvements](RANGE_RECOVERY_0.5.28_EN.md). The preceding Android 0.6.22 update addressed connection resynchronization. [Investigation, changes and deployment](CONNECTION_RESYNC_0.6.22_EN.md).
 
-[Android 0.6.20 retained-link/delivery-waiting change](CONNECTION_STATE_0.6.20_EN.md) · [Repeated radio recovery during passcode lock](LOCKED_RECOVERY_TEST_2026-11-18_EN.md). Installed Watch is now 0.5.32.
+[Android 0.6.20 retained-link/delivery-waiting change](CONNECTION_STATE_0.6.20_EN.md) · [Repeated radio recovery during passcode lock](LOCKED_RECOVERY_TEST_2026-11-18_EN.md). Installed Watch is now 0.5.33.
 
 [한국어](CURRENT_STATUS_KO.md) · **English** · [Install and connect](QUICK_START_EN.md) · [All guides](README.md)
 
@@ -21,10 +21,10 @@ As of **2026-11-25 KST**. This page distinguishes current source, the owner's in
 | Component | Version / location |
 | --- | --- |
 | Android app | **0.6.23-local / code 45** — [WatchBridge-0.6.23.apk](https://github.com/mhj604/WatchBridge/releases/download/android-v0.6.23/WatchBridge-0.6.23.apk) |
-| Watch app and vehicle widget source | **0.5.33 / build 67** — [local-ble source](https://github.com/mhj604/WatchBridge/tree/local-ble), `watch/FoldBridge.xcodeproj`. The owner's installed build remains 66. |
+| Watch app and vehicle widget source | **0.5.33 / build 67** — [local-ble source](https://github.com/mhj604/WatchBridge/tree/local-ble), `watch/FoldBridge.xcodeproj`. Owner installation is also build 67. |
 | Source branches | `main`, `local-ble`, and `fix/watch-background-reconnect`. Documentation-only commits may retain the same app version. |
 | APK release tag | `android-v0.6.23` names the release bundle. Its Android APK is 0.6.23, distinct from the Watch version. |
-| Owner's installed Watch source | Build 66 — automatic panel evidence and retained-panel cleanup installed. Build 63 renewal receipts and notification settings remain preserved. |
+| Owner's installed Watch source | Build 67, source commit `4af189d` — notification-content handling and initial foreground snapshots applied. Panel cleanup, renewal receipts and notification settings remain preserved. |
 
 Sign the watch source for your own Apple team/device. There is no universal signed watch download. **Update existing installations in place; retain the watch Bundle ID/team and Android signing key.** Visible branding is WatchBridge; `dev.foldbridge.*`, source paths, BLE UUIDs and stored keys remain stable to preserve registration.
 
@@ -51,7 +51,7 @@ Version 0.6.22 also includes button-free automatic GATT recovery for the unclaim
 | Connection persistence/recovery | **Physical returns: 3/3 succeeded.** Three controlled radio interruptions and a subsequent ten-minute observation also passed. Investigate any new symptoms using app-owned records while retaining registration. |
 | Multi-hour passcode lock | **Added back to remaining work.** Check whether authentication and new-notification delivery persist or automatically recover after several hours/overnight passcode lock, without opening the app or refreshing. This differs from the ten-minute observation; no additional test has been performed yet. |
 | Free automatic signing renewal | **Active.** A configured weekly Mac task is different from watch-only renewal. A usable free renewal-and-application path using only watch internet has not been established. [Renewal conditions](AUTO_RENEW_EN.md). |
-| Unexpected main-screen display | **Under investigation.** Build 67 adds notification-content handling and initial foreground context; installation is pending. The first OS trigger remains unknown. [Changes and remaining scope](FOREGROUND_ENTRY_0.5.33_EN.md). |
+| Unexpected main-screen display | **Build 67 installed; initial cause under investigation.** Notification-content handling and initial foreground snapshots are applied. Complete resolution is not established. [Deployment and remaining scope](DEPLOYMENT_0.5.33_EN.md). |
 
 Restoration after OS process termination is an untested reference condition, not a newly discovered fault, and is excluded from the agreed required task list.
 
